@@ -24,6 +24,7 @@ import com.cleanup.todoc.injections.ViewModelFactory;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -339,8 +340,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private List<Task> getTasks(){
-        assert this.taskViewModel != null;
-        return this.taskViewModel.getTasks();
+        List<Task> tasks = this.taskViewModel.getTasks();
+        if(tasks==null){
+            return new ArrayList<>();
+        }else return tasks;
     }
 
     private void insertAllTasks(List<Task> taskList){

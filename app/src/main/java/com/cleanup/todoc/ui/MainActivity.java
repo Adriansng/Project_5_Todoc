@@ -342,8 +342,11 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         this.taskViewModel.init();
     }
 
-    private LiveData<List<Task>> getTasks(){
-        return this.taskViewModel.getTasks();
+    private List<Task> getTasks(){
+        List<Task> tasks= (List<Task>) this.taskViewModel.getTasks();
+        if(tasks!=null){
+            return tasks;
+        }return new ArrayList<>();
     }
 
     private void insertAllTasks(List<Task> taskList){

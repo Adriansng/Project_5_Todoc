@@ -343,10 +343,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private List<Task> getTasks(){
-        List<Task> tasks= (List<Task>) this.taskViewModel.getTasks();
-        if(tasks!=null){
-            return tasks;
-        }return new ArrayList<>();
+        return this.taskViewModel.getTasks();
     }
 
     private void insertAllTasks(List<Task> taskList){

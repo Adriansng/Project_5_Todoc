@@ -12,27 +12,21 @@ import android.support.annotation.Nullable;
  *
  * @author Gaëtan HERFRAY
  */
-@Entity (tableName = "projects")
 public class Project {
     /**
      * The unique identifier of the project
      */
-    @PrimaryKey
-    @ColumnInfo(name = "id_project")
     private final long id;
 
     /**
      * The name of the project
      */
     @NonNull
-    @ColumnInfo(name = "name_project")
     private final String name;
 
     /**
      * The hex (ARGB) code of the color associated to the project
      */
-    @ColorInt
-    @ColumnInfo(name = "color_project")
     private final int color;
 
     /**

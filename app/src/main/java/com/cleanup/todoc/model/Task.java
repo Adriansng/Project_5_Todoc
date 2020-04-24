@@ -16,13 +16,14 @@ import java.util.Comparator;
  *
  * @author Gaëtan HERFRAY
  */
-@Entity(tableName = "tasks")
+@Entity(foreignKeys = @ForeignKey(entity = Project.class,
+        parentColumns = "id",
+        childColumns = "projectId"))
 public class Task {
     /**
      * The unique identifier of the task
      */
     @PrimaryKey( autoGenerate = true)
-    @ColumnInfo(name= "task_id")
     public long id;
 
     /**
@@ -36,13 +37,11 @@ public class Task {
     // Suppress warning because setName is called in constructor
     @SuppressWarnings("NullableProblems")
     @NonNull
-    @ColumnInfo(name = "name_task")
     public String name;
 
     /**
      * The timestamp when the task has been created
      */
-    @ColumnInfo(name = "creation_timestamp")
     public long creationTimestamp;
 
     /**

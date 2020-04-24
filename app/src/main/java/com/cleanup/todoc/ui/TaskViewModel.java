@@ -2,7 +2,6 @@ package com.cleanup.todoc.ui;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.cleanup.todoc.model.Task;
@@ -21,17 +20,25 @@ public class TaskViewModel extends ViewModel {
     private final Executor executor;
 
     // DATA
+    @Nullable
+    public LiveData<List<Task>> currentTasks;
+
     public TaskViewModel(TaskDataRepository taskDataSource, Executor executor) {
         this.taskDataSource = taskDataSource;
         this.executor = executor;
+    }
+
+    public void init(){
+        if(this.currentTasks != null){
+            currentTasks= taskDataSource.getAllTasks();
+        }
     }
 
     // --------------------
     // FOR TASK
     // --------------------
 
-
-    public List<Task> getTasks(){
+    public LiveData<List<Task>> getTasks(){
         return taskDataSource.getAllTasks();
     }
 

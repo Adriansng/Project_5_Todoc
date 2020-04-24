@@ -1,5 +1,6 @@
 package com.cleanup.todoc.ui;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * List of all current tasks of the application
      */
     @NonNull
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> tasks = (List<Task>) getTasks();
 
     /**
      * The adapter which handles the list of tasks
@@ -105,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
 
         this.configureViewModel();
-        tasks = getTasks();
         this.insertAllTasks(tasks);
 
 
@@ -339,13 +339,11 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     private void configureViewModel(){
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         this.taskViewModel = ViewModelProviders.of(this, mViewModelFactory).get(TaskViewModel.class);
+        this.taskViewModel.init();
     }
 
-    private List<Task> getTasks(){
-        List<Task> tasks = this.taskViewModel.getTasks();
-        if(tasks==null){
-            return new ArrayList<>();
-        }else return tasks;
+    private LiveData<List<Task>> getTasks(){
+        return this.taskViewModel.getTasks();
     }
 
     private void insertAllTasks(List<Task> taskList){

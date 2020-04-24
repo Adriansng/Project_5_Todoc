@@ -1,5 +1,6 @@
 package com.cleanup.todoc.database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -16,8 +17,8 @@ import java.util.List;
 @Dao
 public interface TaskDao {
 
-    @Query("SELECT*FROM tasks")
-    List<Task> getAllTask();
+    @Query("SELECT*FROM task")
+    LiveData<List<Task>> getAllTask();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllTask(List<Task> taskList);
@@ -28,6 +29,6 @@ public interface TaskDao {
     @Update
     int updateTask(Task task);
 
-    @Query("DELETE FROM tasks WHERE task_id = :taskId")
+    @Query("DELETE FROM task WHERE id = :taskId")
     int deleteTask(long taskId);
 }

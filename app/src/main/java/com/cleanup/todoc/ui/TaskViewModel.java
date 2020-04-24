@@ -26,7 +26,8 @@ public class TaskViewModel extends ViewModel {
     // DATA
     @Nullable
     public List<Task> currentTasks;
-    public LiveData<Project> currentProject;
+    @Nullable
+    public Project currentProject;
 
     public TaskViewModel(TaskDataRepository taskDataSource, ProjectDataRepository projectDataSource, Executor executor) {
         this.taskDataSource = taskDataSource;

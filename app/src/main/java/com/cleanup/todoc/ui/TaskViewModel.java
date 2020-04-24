@@ -4,7 +4,9 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
 
+import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.repositories.ProjectDataRepository;
 import com.cleanup.todoc.repositories.TaskDataRepository;
 
 import java.util.List;
@@ -17,15 +19,25 @@ public class TaskViewModel extends ViewModel {
 
     // REPOSITORIES
     private final TaskDataRepository taskDataSource;
+
+    private final ProjectDataRepository projectDataSource;
     private final Executor executor;
 
     // DATA
     @Nullable
     public LiveData<List<Task>> currentTasks;
+    public LiveData<Project> currentProject;
 
-    public TaskViewModel(TaskDataRepository taskDataSource, Executor executor) {
+    public TaskViewModel(TaskDataRepository taskDataSource, ProjectDataRepository projectDataSource, Executor executor) {
         this.taskDataSource = taskDataSource;
+        this.projectDataSource = projectDataSource;
         this.executor = executor;
+    }
+
+    public void initProject(long projectId){
+        if(this.currentProject != null){
+            currentProject = projectDataSource.getProject(projectId);
+        }
     }
 
     public void init(){

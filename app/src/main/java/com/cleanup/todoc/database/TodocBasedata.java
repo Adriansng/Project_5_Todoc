@@ -5,12 +5,13 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
 /**
  * Created by Adrian SENEGAS 24/04/2020.
  */
-@Database(entities = {Task.class}, version = 1, exportSchema = false)
+@Database(entities = {Task.class, Project.class}, version = 1, exportSchema = false)
 public abstract class TodocBasedata extends RoomDatabase {
 
     // --- SINGLETON --
@@ -18,6 +19,7 @@ public abstract class TodocBasedata extends RoomDatabase {
 
     // --- DAO ---
     public abstract TaskDao taskDao();
+    public abstract ProjectDao projectDao();
 
     // --- INSTANCE ---
     public static TodocBasedata getInstance(Context context){

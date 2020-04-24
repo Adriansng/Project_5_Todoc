@@ -25,8 +25,9 @@ public class TaskViewModel extends ViewModel {
 
     // DATA
     @Nullable
-    public LiveData<List<Task>> currentTasks;
-    public LiveData<Project> currentProject;
+    public List<Task> currentTasks;
+    @Nullable
+    public Project currentProject;
 
     public TaskViewModel(TaskDataRepository taskDataSource, ProjectDataRepository projectDataSource, Executor executor) {
         this.taskDataSource = taskDataSource;
@@ -50,7 +51,7 @@ public class TaskViewModel extends ViewModel {
     // FOR TASK
     // --------------------
 
-    public LiveData<List<Task>> getTasks(){
+    public List<Task> getTasks(){
         return taskDataSource.getAllTasks();
     }
 

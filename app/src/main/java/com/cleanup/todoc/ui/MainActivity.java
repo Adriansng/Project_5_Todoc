@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         this.configureViewModel();
         tasks = getTasks();
+        updateTasks();
 
 
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     @Override
     public void onDeleteTask(Task task) {
-        this.deleteTask(task.getId());
+        deleteTask(task.getId());
         updateTasks();
     }
 
@@ -220,8 +221,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * @param task the task to be added to the list
      */
     private void addTask(@NonNull Task task) {
-        //tasks.add(task);
-        this.createTask(task);
+        createTask(task);
         updateTasks();
     }
 
@@ -250,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                     break;
 
             }
+            tasks=getTasks();
             adapter.updateTasks(tasks);
         }
     }
@@ -343,10 +344,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private List<Task> getTasks(){
-        List<Task> tasks= (List<Task>) this.taskViewModel.getTasks();
-        if(tasks!=null){
-            return tasks;
-        }return new ArrayList<>();
+        return this.taskViewModel.getTasks();
     }
 
     private void insertAllTasks(List<Task> taskList){

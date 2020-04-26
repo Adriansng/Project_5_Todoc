@@ -19,7 +19,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     private final Executor executor;
 
 
-    public ViewModelFactory( TaskDataRepository taskDataSources,ProjectDataRepository projectDataSource, Executor executor) {
+    ViewModelFactory(TaskDataRepository taskDataSources, ProjectDataRepository projectDataSource, Executor executor) {
         this.taskDataSources = taskDataSources;
         this.projectDataSource = projectDataSource;
         this.executor = executor;

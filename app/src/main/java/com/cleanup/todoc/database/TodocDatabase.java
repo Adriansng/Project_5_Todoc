@@ -12,22 +12,22 @@ import com.cleanup.todoc.model.Task;
  * Created by Adrian SENEGAS 24/04/2020.
  */
 @Database(entities = {Task.class, Project.class}, version = 1, exportSchema = false)
-public abstract class TodocBasedata extends RoomDatabase {
+public abstract class TodocDatabase extends RoomDatabase {
 
     // --- SINGLETON --
-    private static volatile TodocBasedata INSTANCE;
+    private static volatile TodocDatabase INSTANCE;
 
     // --- DAO ---
     public abstract TaskDao taskDao();
     public abstract ProjectDao projectDao();
 
     // --- INSTANCE ---
-    public static TodocBasedata getInstance(Context context){
+    public static TodocDatabase getInstance(Context context){
         if(INSTANCE == null) {
-            synchronized (TodocBasedata.class) {
+            synchronized (TodocDatabase.class) {
                 if (INSTANCE == null){
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            TodocBasedata.class,"TodocDatabse.db").allowMainThreadQueries()
+                            TodocDatabase.class,"TodocDatabse.db").allowMainThreadQueries()
                             .build();
 
                 }

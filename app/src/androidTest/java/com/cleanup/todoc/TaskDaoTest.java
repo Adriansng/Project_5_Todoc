@@ -5,8 +5,7 @@ import android.arch.persistence.room.Room;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.cleanup.todoc.database.TodocBasedata;
-import com.cleanup.todoc.model.Project;
+import com.cleanup.todoc.database.TodocDatabase;
 import com.cleanup.todoc.model.Task;
 
 import org.junit.After;
@@ -27,7 +26,7 @@ import static junit.framework.TestCase.assertTrue;
 public class TaskDaoTest {
 
     // FOR DATA
-    private TodocBasedata database;
+    private TodocDatabase database;
 
     // FOR SET FOR TEST
     private Task NEW_TASK_1 = new Task(1L,"Ajouter un header au site",1587253634);
@@ -39,7 +38,7 @@ public class TaskDaoTest {
 
     @Before
     public void initDb(){
-        this.database= Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),TodocBasedata.class)
+        this.database= Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), TodocDatabase.class)
                 .allowMainThreadQueries()
                 .build();
     }

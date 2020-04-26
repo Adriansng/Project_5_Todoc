@@ -1,6 +1,5 @@
 package com.cleanup.todoc.repositories;
 
-import android.arch.lifecycle.LiveData;
 
 import com.cleanup.todoc.database.ProjectDao;
 import com.cleanup.todoc.model.Project;

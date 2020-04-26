@@ -347,10 +347,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         return this.taskViewModel.getTasks();
     }
 
-    private void insertAllTasks(List<Task> taskList){
-        this.taskViewModel.insertAllTasks(taskList);
-    }
-
     private void createTask(Task task){
         this.taskViewModel.createTask(task);
     }

@@ -17,7 +17,7 @@ public class TaskDataRepository {
     public List<Task> getAllTasks(){return this.taskDao.getAllTasks();}
 
     // --- CREATE ---
-    public void createTask(Task task){taskDao.createTask(task);};
+    public void createTask(Task task){taskDao.createTask(task);}
 
     // --- DELETE ---
     public void deleteTask(long taskId){taskDao.deleteTask(taskId);}

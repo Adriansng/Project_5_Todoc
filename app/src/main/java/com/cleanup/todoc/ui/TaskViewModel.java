@@ -55,21 +55,9 @@ public class TaskViewModel extends ViewModel {
         return taskDataSource.getAllTasks();
     }
 
-    public void insertAllTasks(List<Task> taskList){
-        executor.execute(() ->{
-            taskDataSource.insertAllTasks(taskList);
-        });
-    }
-
     public void createTask(Task task){
         executor.execute(() ->{
             taskDataSource.createTask(task);
-        });
-    }
-
-    public void updateTask(Task task){
-        executor.execute(() ->{
-            taskDataSource.updateTask(task);
         });
     }
 

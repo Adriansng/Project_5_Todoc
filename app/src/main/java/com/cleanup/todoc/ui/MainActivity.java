@@ -244,21 +244,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         } else {
             lblNoTasks.setVisibility(View.GONE);
             listTasks.setVisibility(View.VISIBLE);
-            switch (sortMethod) {
-                case ALPHABETICAL:
-                    Collections.sort(tasks, new Task.TaskAZComparator());
-                    break;
-                case ALPHABETICAL_INVERTED:
-                    Collections.sort(tasks, new Task.TaskZAComparator());
-                    break;
-                case RECENT_FIRST:
-                    Collections.sort(tasks, new Task.TaskRecentComparator());
-                    break;
-                case OLD_FIRST:
-                    Collections.sort(tasks, new Task.TaskOldComparator());
-                    break;
-
-            }
             adapter.updateTasks(tasks);
         }
     }

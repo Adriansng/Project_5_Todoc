@@ -1,6 +1,7 @@
 package com.cleanup.todoc;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Room;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
@@ -49,31 +50,31 @@ public class TaskDaoTest {
     }
 
     @Test
-    public void getTasksWhenNoItemInserted(){
+    public void getTasksWhenNoItemInserted() throws InterruptedException {
         // TEST
-        List<Task> tasks= this.database.taskDao().getAllTasks();
+        List<Task> tasks=LiveDataTestUtil.getValue(this.database.taskDao().getAllTasks());
         assertTrue(tasks.isEmpty());
     }
 
     @Test
-    public  void insertAndGetTasks() {
+    public  void insertAndGetTasks() throws InterruptedException {
         // BEFORE : Adding demo tasks
         this.database.taskDao().createTask(NEW_TASK_1);
         this.database.taskDao().createTask(NEW_TASK_2);
         this.database.taskDao().createTask(NEW_TASK_3);
         // TEST
-        List<Task> tasks= this.database.taskDao().getAllTasks();
+        List<Task> tasks= LiveDataTestUtil.getValue(this.database.taskDao().getAllTasks());
         assertEquals(3, tasks.size());
     }
 
     @Test
-    public void insertAndDeleteTask() {
+    public void insertAndDeleteTask() throws InterruptedException {
         // BEFORE : Adding demo task. Next, get the task added & delete it
         this.database.taskDao().createTask(NEW_TASK_1);
-        Task taskAdded = this.database.taskDao().getAllTasks().get(0);
+        Task taskAdded = LiveDataTestUtil.getValue(this.database.taskDao().getAllTasks()).get(0);
         this.database.taskDao().deleteTask(taskAdded.getId());
         // TEST
-        List<Task> tasks= this.database.taskDao().getAllTasks();
+        List<Task> tasks= LiveDataTestUtil.getValue(this.database.taskDao().getAllTasks());
         assertTrue(tasks.isEmpty());
     }
 }

@@ -50,7 +50,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      */
     void updateTasks(@NonNull final List<Task> tasks) {
         this.tasks = tasks;
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     @NonNull

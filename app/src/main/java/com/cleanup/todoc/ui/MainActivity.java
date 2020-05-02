@@ -106,8 +106,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
 
         this.configureViewModel();
-        tasks = getTasks();
-        updateTasks();
+        this.configureObserverViewModel();
 
 
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -119,6 +118,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 showAddTaskDialog();
             }
         });
+    }
+
+    private void configureObserverViewModel(){
+        this.taskViewModel.getTasks().observe(this, this::updateTasks);
     }
 
     @Override
@@ -141,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             sortMethod = SortMethod.RECENT_FIRST;
         }
 
-        updateTasks();
+        updateTasks(tasks);
 
         return super.onOptionsItemSelected(item);
     }
@@ -149,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public void onDeleteTask(Task task) {
         deleteTask(task.getId());
-        updateTasks();
     }
 
     /**
@@ -222,20 +224,19 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     private void addTask(@NonNull Task task) {
         createTask(task);
-        updateTasks();
     }
 
     /**
      * Updates the list of tasks in the UI
      */
-    private void updateTasks() {
+    private void updateTasks(List<Task> tasks) {
         if (tasks.size() == 0) {
             lblNoTasks.setVisibility(View.VISIBLE);
             listTasks.setVisibility(View.GONE);
         } else {
             lblNoTasks.setVisibility(View.GONE);
             listTasks.setVisibility(View.VISIBLE);
-            switch (sortMethod) {
+            /*switch (sortMethod) {
                 case ALPHABETICAL:
                     Collections.sort(tasks, new Task.TaskAZComparator());
                     break;
@@ -249,8 +250,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                     Collections.sort(tasks, new Task.TaskOldComparator());
                     break;
 
-            }
-            tasks=getTasks();
+            }*/
             adapter.updateTasks(tasks);
         }
     }
@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         this.taskViewModel.init();
     }
 
-    private List<Task> getTasks(){
+    private LiveData<List<Task>> getTasks(){
         return this.taskViewModel.getTasks();
     }
 

@@ -1,5 +1,6 @@
 package com.cleanup.todoc.ui;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
 
@@ -24,7 +25,7 @@ public class TaskViewModel extends ViewModel {
 
     // DATA
     @Nullable
-    private List<Task> currentTasks;
+    private LiveData<List<Task>> currentTasks;
     @Nullable
     private Project currentProject;
 
@@ -50,7 +51,7 @@ public class TaskViewModel extends ViewModel {
     // FOR TASK
     // --------------------
 
-    List<Task> getTasks(){
+    LiveData<List<Task>> getTasks(){
         return taskDataSource.getAllTasks();
     }
 

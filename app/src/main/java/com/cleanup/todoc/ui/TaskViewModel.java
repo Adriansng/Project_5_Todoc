@@ -1,6 +1,7 @@
 package com.cleanup.todoc.ui;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
 
@@ -60,4 +61,9 @@ public class TaskViewModel extends ViewModel {
 
     void deleteTask(long taskId){
         executor.execute(() -> taskDataSource.deleteTask(taskId));}
+
+    LiveData<SortMethod> updateSortMethod(){
+        return new MutableLiveData<>();
+    }
+
 }

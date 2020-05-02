@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public void onDeleteTask(Task task) {
         deleteTask(task.getId());
+        updateTasks(tasks);
     }
 
     /**
@@ -224,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     private void addTask(@NonNull Task task) {
         createTask(task);
+        updateTasks(tasks);
     }
 
     /**

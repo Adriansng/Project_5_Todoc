@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         this.configureViewModel();
         this.configureObserverViewModel();
         this.configureObserverSortViewModel();
-        updateTasks(tasks);
+        updateTasks(tasks,sortMethod);
 
 
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -123,11 +123,14 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private void configureObserverSortViewModel() {
-        this.taskViewModel.updateSortMethod().observe(this, sortMethod -> updateTasksSort(sortMethod));
+        this.taskViewModel.updateSortMethod().observe(this, sortMethod -> updateTasks(tasks,sortMethod));
     }
 
     private void configureObserverViewModel(){
-        this.taskViewModel.getTasks().observe(this, this::updateTasks);
+        this.taskViewModel.getTasks().observe(this, taskss -> {
+            assert taskss != null;
+            updateTasks(taskss, sortMethod);
+        });
     }
 
     @Override
@@ -150,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             sortMethod = SortMethod.RECENT_FIRST;
         }
 
-        updateTasks(tasks);
+        updateTasks(tasks,sortMethod);
 
         return super.onOptionsItemSelected(item);
     }
@@ -158,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public void onDeleteTask(Task task) {
         this.taskViewModel.deleteTask(task.getId());
-        updateTasks(tasks);
+        updateTasks(tasks,sortMethod);
     }
 
     /**
@@ -231,37 +234,34 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     private void addTask(@NonNull Task task) {
         this.taskViewModel.createTask(task);
-        updateTasks(tasks);
+        updateTasks(tasks,sortMethod);
     }
 
     /**
      * Updates the list of tasks in the UI
      */
-    private void updateTasks(List<Task> tasks) {
+    private void updateTasks(List<Task> tasks, SortMethod sortMethod) {
         if (tasks.size() == 0) {
             lblNoTasks.setVisibility(View.VISIBLE);
             listTasks.setVisibility(View.GONE);
         } else {
             lblNoTasks.setVisibility(View.GONE);
             listTasks.setVisibility(View.VISIBLE);
+            switch (sortMethod) {
+                case ALPHABETICAL:
+                    Collections.sort(tasks, new Task.TaskAZComparator());
+                    break;
+                case ALPHABETICAL_INVERTED:
+                    Collections.sort(tasks, new Task.TaskZAComparator());
+                    break;
+                case RECENT_FIRST:
+                    Collections.sort(tasks, new Task.TaskRecentComparator());
+                    break;
+                case OLD_FIRST:
+                    Collections.sort(tasks, new Task.TaskOldComparator());
+                    break;
+            }
             adapter.updateTasks(tasks);
-        }
-    }
-
-    private void updateTasksSort(SortMethod sortMethod) {
-        switch (sortMethod) {
-            case ALPHABETICAL:
-                Collections.sort(tasks, new Task.TaskAZComparator());
-                break;
-            case ALPHABETICAL_INVERTED:
-                Collections.sort(tasks, new Task.TaskZAComparator());
-                break;
-            case RECENT_FIRST:
-                Collections.sort(tasks, new Task.TaskRecentComparator());
-                break;
-            case OLD_FIRST:
-                Collections.sort(tasks, new Task.TaskOldComparator());
-                break;
         }
     }
 

@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.cleanup.todoc.repositories.ProjectDataRepository;
 import com.cleanup.todoc.repositories.TaskDataRepository;
-import com.cleanup.todoc.ui.TaskViewModel;
+import com.cleanup.todoc.viewModel.TaskViewModel;
 
 import java.util.concurrent.Executor;
 
@@ -18,13 +18,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     private final ProjectDataRepository projectDataSource;
     private final Executor executor;
 
-
     ViewModelFactory(TaskDataRepository taskDataSources, ProjectDataRepository projectDataSource, Executor executor) {
         this.taskDataSources = taskDataSources;
         this.projectDataSource = projectDataSource;
         this.executor = executor;
     }
-
 
     @NonNull
     @Override

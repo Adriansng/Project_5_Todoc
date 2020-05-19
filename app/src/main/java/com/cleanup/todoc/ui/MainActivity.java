@@ -23,6 +23,9 @@ import com.cleanup.todoc.injections.Injection;
 import com.cleanup.todoc.injections.ViewModelFactory;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.utils.SortMethod;
+import com.cleanup.todoc.utils.Util;
+import com.cleanup.todoc.viewModel.TaskViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         this.configureViewModel();
         this.configureObserverViewModel();
-        this.configureObserverSortViewModel();
         updateTasks(tasks);
 
 
@@ -122,10 +124,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         this.taskViewModel.init();
     }
 
-    private void configureObserverSortViewModel() {
-        this.taskViewModel.updateSort().observe(this, sortMethod -> updateSortTasks(tasks,sortMethod));
-    }
-
     private void configureObserverViewModel(){
         this.taskViewModel.getTasks().observe(this, this::updateTasks);
     }
@@ -138,27 +136,28 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.filter_alphabetical) {
-            sortMethod = SortMethod.ALPHABETICAL;
-        } else if (id == R.id.filter_alphabetical_inverted) {
-            sortMethod = SortMethod.ALPHABETICAL_INVERTED;
-        } else if (id == R.id.filter_oldest_first) {
-            sortMethod = SortMethod.OLD_FIRST;
-        } else if (id == R.id.filter_recent_first) {
-            sortMethod = SortMethod.RECENT_FIRST;
+        switch (item.getItemId()) {
+            case R.id.filter_alphabetical:
+                this.sortMethod= SortMethod.ALPHABETICAL;
+                break;
+            case R.id.filter_alphabetical_inverted:
+                this.sortMethod=SortMethod.ALPHABETICAL_INVERTED;
+                break;
+            case R.id.filter_recent_first:
+                this.sortMethod=SortMethod.RECENT_FIRST;
+                break;
+            case R.id.filter_oldest_first:
+                this.sortMethod=SortMethod.OLD_FIRST;
+                break;
         }
-
-        updateSortTasks(tasks, sortMethod);
-
+        final List<Task> newTasks= Util.sortTasks(this.adapter.getCurrentTasks(),sortMethod);
+        this.adapter.updateTasks(newTasks);
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onDeleteTask(Task task) {
         this.taskViewModel.deleteTask(task.getId());
-        updateTasks(tasks);
     }
 
     /**
@@ -231,7 +230,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     private void addTask(@NonNull Task task) {
         this.taskViewModel.createTask(task);
-        updateTasks(tasks);
     }
 
     /**
@@ -244,34 +242,11 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         } else {
             lblNoTasks.setVisibility(View.GONE);
             listTasks.setVisibility(View.VISIBLE);
-            adapter.updateTasks(tasks);
         }
+        this.adapter.updateTasks(Util.sortTasks(tasks,sortMethod));
     }
 
-    private void updateSortTasks(List<Task> tasks, SortMethod sortMethod){
-        if (tasks.size() == 0) {
-            lblNoTasks.setVisibility(View.VISIBLE);
-            listTasks.setVisibility(View.GONE);
-        } else {
-            lblNoTasks.setVisibility(View.GONE);
-            listTasks.setVisibility(View.VISIBLE);
-            switch (sortMethod) {
-                case ALPHABETICAL:
-                    Collections.sort(tasks, new Task.TaskAZComparator());
-                    break;
-                case ALPHABETICAL_INVERTED:
-                    Collections.sort(tasks, new Task.TaskZAComparator());
-                    break;
-                case RECENT_FIRST:
-                    Collections.sort(tasks, new Task.TaskRecentComparator());
-                    break;
-                case OLD_FIRST:
-                    Collections.sort(tasks, new Task.TaskOldComparator());
-                    break;
-            }
-            updateTasks(tasks);
-        }
-    }
+
 
     /**
      * Returns the dialog allowing the user to create a new task.

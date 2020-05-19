@@ -1,4 +1,4 @@
-package com.cleanup.todoc.ui;
+package com.cleanup.todoc.viewModel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
@@ -29,8 +29,6 @@ public class TaskViewModel extends ViewModel {
     @Nullable
     private Project currentProject;
 
-    private SortMethod sortMethod = SortMethod.NONE;
-
     public TaskViewModel(TaskDataRepository taskDataSource, ProjectDataRepository projectDataSource, Executor executor) {
         this.taskDataSource = taskDataSource;
         this.projectDataSource = projectDataSource;
@@ -43,7 +41,7 @@ public class TaskViewModel extends ViewModel {
         }
     }
 
-    void init(){
+    public void init(){
         if(this.currentTasks != null){
             currentTasks= taskDataSource.getAllTasks();
         }
@@ -53,23 +51,14 @@ public class TaskViewModel extends ViewModel {
     // FOR TASK
     // --------------------
 
-    LiveData<List<Task>> getTasks(){
+    public LiveData<List<Task>> getTasks(){
         return taskDataSource.getAllTasks();
     }
 
-    void createTask(Task task){
+    public void createTask(Task task){
         executor.execute(() -> taskDataSource.createTask(task));}
 
-    void deleteTask(long taskId){
+    public void deleteTask(long taskId){
         executor.execute(() -> taskDataSource.deleteTask(taskId));}
 
-    LiveData<SortMethod> updateSort(){
-        return new LiveData<SortMethod>() {
-            @Nullable
-            @Override
-            public SortMethod getValue() {
-                return super.getValue();
-            }
-        };
-    }
 }

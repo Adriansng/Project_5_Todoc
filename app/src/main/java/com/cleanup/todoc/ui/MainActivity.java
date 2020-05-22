@@ -28,7 +28,6 @@ import com.cleanup.todoc.utils.Util;
 import com.cleanup.todoc.viewModel.TaskViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
